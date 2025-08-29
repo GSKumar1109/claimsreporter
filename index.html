@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.min.js"></script>
+    <title>Depot Sales Manager</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="card">
+        <div class="row" style="justify-content: space-between">
+          <div>
+            <h1>Claim Reporter</h1>
+            <div class="muted">
+              Enter cases & per-case rate for 8 products.<br />
+              One <b>row per Syndicate</b> with <b>Shop IDs (labels only)</b>.
+              Totals do <u>not</u> multiply by shop count.
+            </div>
+          </div>
+          <div class="pill">
+            <!-- <span>Depot</span> -->
+            <div>
+                <label for="depotSelect">Depot:</label>
+                <select id="depotSelect"></select>
+              
+                <label for="monthSelect">Month:</label>
+                <select id="monthSelect">
+                  <option value="01">January</option>
+                  <option value="02">February</option>
+                  <option value="03">March</option>
+                  <option value="04">April</option>
+                  <option value="05">May</option>
+                  <option value="06">June</option>
+                  <option value="07">July</option>
+                  <option value="08">August</option>
+                  <option value="09">September</option>
+                  <option value="10">October</option>
+                  <option value="11">November</option>
+                  <option value="12">December</option>
+                </select>
+              
+                <label for="yearSelect">Year:</label>
+                <select id="yearSelect"></select>
+              </div>
+              
+            <span class="badge" id="rowCount">0 rows</span>
+          </div>
+        </div>
+
+        <div class="spacer"></div>
+
+        <details>
+          <summary>
+            <strong>Product Names & Settings</strong>
+            <span class="note">(optional)</span>
+          </summary>
+          <div class="spacer"></div>
+          <div
+            class="grid"
+            style="grid-template-columns: repeat(auto-fill, minmax(100px, 1fr))"
+            id="productNameGrid"
+          ></div>
+          <div class="spacer"></div>
+          <div class="controls">
+            <button id="addProduct" class="btn-primary">+ Add Product</button>
+            <button id="removeProduct" class="btn-danger">
+              – Remove Last Product
+            </button>
+            <button id="saveNames" class="btn-primary">
+              Save Product Names
+            </button>
+            <button id="resetNames" class="btn-ghost">Reset to P1…P9</button>
+            <button id="addDepot">Add Depot</button>
+            <button id="deleteDepot">Delete Depot</button>
+          </div>
+        </details>
+
+        <div class="spacer"></div>
+
+        <div class="card" style="background: #0c1529">
+          <h3>Add Entry</h3>
+          <div class="spacer"></div>
+          <form id="entryForm">
+            <div class="grid form">
+              <input
+                class="span-2"
+                id="syndicate"
+                placeholder="Syndicate name"
+                required
+              />
+              <input
+                class="span-3"
+                id="shopIds"
+                placeholder="Shop IDs (comma separated)"
+                required
+                oninput="
+         // Allow letters, numbers, commas
+         let cleaned = this.value.replace(/[^a-zA-Z0-9,]/g, '');
+
+         // Replace multiple commas with single
+         cleaned = cleaned.replace(/,{2,}/g, ',');
+
+         // Allow trailing comma while typing
+         this.value = cleaned;
+       "
+                onblur="
+         // On leaving the field, clean up & remove duplicates
+         let parts = this.value.split(',').filter(p => p.trim() !== '');
+         let unique = [...new Set(parts)];
+         this.value = unique.join(',');
+       "
+              />
+
+              <div class="span-6 note" style="align-self: center">
+                Enter <b>Cases</b> & <b>Rate</b> for each product; amounts
+                auto-calc.
+              </div>
+
+              <div class="span-6">
+                <div
+                  id="productInputs"
+                  class="row"
+                  style="flex-wrap: wrap"
+                ></div>
+              </div>
+
+              <div class="span-6 controls">
+                <button type="submit" class="btn-primary">
+                  Add / Update Syndicate
+                </button>
+                <button type="button" id="clearForm" class="btn-ghost">
+                  Clear
+                </button>
+                <span class="right note" id="formTotal">Row Total: 0</span>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="spacer"></div>
+
+        <div class="controls">
+          <button id="exportBtn">Export Depot JSON</button>
+          <input
+            type="file"
+            id="importFile"
+            accept="application/json"
+            class="hidden"
+          />
+          <button id="importBtn">Import JSON to Depot</button>
+          <button id="exportExcelBtn" class="btn-primary">
+            Export Depot Excel
+          </button>
+          <button id="clearDepot" class="btn-danger">Clear Depot Data</button>
+        </div>
+
+        <div class="spacer"></div>
+
+        <div class="table-wrap" id="tableWrap">
+          <table id="dataTable"></table>
+        </div>
+      </div>
+    </div>
+
+    <template id="productInputTpl">
+      <div class="card" style="padding: 10px; min-width: 260px">
+        <div class="muted" data-role="label">Product</div>
+        <div class="row">
+          <input
+            type="number"
+            min="0"
+            step="1"
+            placeholder="Cases"
+            data-role="cases"
+          />
+          <input
+            type="number"
+            min="0"
+            step="0.01"
+            placeholder="Rate"
+            data-role="rate"
+          />
+          <input
+            type="number"
+            placeholder="Amount"
+            data-role="amount"
+            readonly
+          />
+        </div>
+      </div>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>

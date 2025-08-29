@@ -1,0 +1,206 @@
+:root {
+  --bg:#0b1220; 
+  --panel:#111a2d; 
+  --muted:#8aa0bf; 
+  --text:#e9f0ff; 
+  --accent:#5aa9ff; 
+  --accent-2:#7cffc3;
+  --danger:#ff6b6b; 
+  --ok:#1dd1a1; 
+  --warn:#ffd166; 
+  --border:#1f2a44;
+}
+
+/* Reset + base */
+* { box-sizing:border-box }
+html,body { height:100% }
+body {
+  margin:0;
+  background:linear-gradient(180deg,#0b1220 0%,#0b1426 30%,#0c172c 100%);
+  color:var(--text);
+  font:500 14px/1.4 system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,"Apple Color Emoji","Segoe UI Emoji";
+}
+
+h1,h2,h3 { margin:0 0 .5rem 0 }
+.wrap { max-width:1200px; margin:24px auto; padding:0 16px }
+
+/* Card style */
+.card {
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:16px;
+  box-shadow:0 8px 24px rgba(0,0,0,.4);
+  padding:16px;
+}
+
+/* Layout helpers */
+.row { display:flex; gap:12px; flex-wrap:wrap; align-items:center }
+.row > * { flex:1 1 auto }
+.controls { display:flex; gap:8px; flex-wrap:wrap }
+
+select,input,button,details { font:inherit }
+
+select,input {
+  background:#0c1529;
+  border:1px solid var(--border);
+  color:var(--text);
+  border-radius:10px;
+  padding:10px 12px;
+  outline:none;
+}
+input[type=number] { width:110px }
+input[readonly] { opacity:.8 }
+
+/* Pills */
+.pill {
+  display:inline-flex; align-items:center; gap:8px;
+  border:1px solid var(--border);
+  background:#0c1529;
+  padding:8px 12px;
+  border-radius:999px;
+}
+
+/* Buttons */
+button {
+  background:linear-gradient(180deg,#1a2743,#15223b);
+  border:1px solid var(--border);
+  color:var(--text);
+  padding:10px 14px;
+  border-radius:12px;
+  cursor:pointer;
+  transition:.15s transform,.15s opacity;
+}
+button:hover { transform:translateY(-1px) }
+button:active { transform:translateY(0) }
+.btn-primary { background:linear-gradient(180deg,#2a69ff,#1f56d4); border-color:#214a9b }
+.btn-danger { background:linear-gradient(180deg,#ff6b6b,#e35050); border-color:#a53a3a }
+.btn-ghost { background:transparent }
+
+.spacer { height:12px }
+
+/* Table styles */
+.table-wrap {
+  overflow:auto;
+  border:1px solid var(--border);
+  border-radius:14px;
+}
+table {
+  border-collapse:separate;
+  border-spacing:0;
+  width:100%;
+  min-width:1200px;
+}
+thead th {
+  position:sticky;
+  top:0;
+  background:#0f1930;
+  z-index:2;
+  text-align:center; /* ✅ product headers centered */
+  vertical-align:middle;
+  white-space:nowrap;
+}
+th,td {
+  border-bottom:1px solid var(--border);
+  padding:8px 12px;
+  vertical-align:middle; /* ✅ keeps values stable */
+  text-align:center; /* ✅ default for numbers */
+  white-space:nowrap;
+}
+
+/* Subheaders inside product groups */
+thead tr.subheader th {
+  text-align:right; /* ✅ keep Rate / Amount / Cases right aligned */
+  vertical-align:middle;
+}
+
+/* Sticky columns */
+th:first-child, td:first-child {
+  position: sticky;
+  left: 0;
+  min-width: 160px;
+  max-width: 160px;
+  background: #0c1529 !important;
+  z-index: 3;
+  text-align:left;   /* ✅ syndicate aligned left */
+  vertical-align:middle;
+  white-space: normal;
+  word-break: break-word;
+  max-width: 200px; /* you can adjust the width */
+}
+
+th:nth-child(2), td:nth-child(2) {
+  position: sticky;
+  left: 160px; /* same as Syndicate width */
+  min-width: 200px;
+  max-width: 200px;
+  background: #0c1529 !important;
+  z-index: 3;
+  text-align:left;   /* ✅ shop IDs aligned left */
+  vertical-align:middle;
+
+  /* ✅ allow wrapping for long shop IDs */
+  white-space:normal !important;
+  word-wrap:break-word;
+  overflow-wrap:break-word;
+  line-height:1.3;
+}
+
+/* Row types */
+tbody tr.group { background:rgba(122,255,195,.06) }
+tr.subtotal td {
+  font-weight:700;
+  color:#d6ffe9;
+  background:rgba(124,255,195,0.06);
+}
+tfoot td {
+  font-weight:800;
+  color:#fff;
+  background:rgba(90,169,255,0.08);
+  border-top:2px solid var(--border);
+}
+
+/* Depot total row highlight */
+tfoot tr.depot-total td {
+  background:rgba(90,169,255,0.15);
+  color:#fff;
+  font-size:15px;
+  text-align:right;
+}
+tfoot tr.depot-total td:first-child {
+  text-align:left;
+  background:rgba(90,169,255,0.15) !important; /* ✅ fixes gap under sticky */
+}
+tfoot tr.depot-total td[colspan] {
+  text-align:left;
+  background:rgba(90,169,255,0.15) !important; /* ✅ span matches */
+}
+
+/* Misc */
+.badge {
+  display:inline-block;
+  padding:2px 8px;
+  border-radius:999px;
+  background:rgba(90,169,255,.12);
+  border:1px solid rgba(90,169,255,.35);
+  color:#cfe3ff;
+  font-size:12px;
+}
+.muted { color:var(--muted) }
+.grid { display:grid; gap:12px }
+.grid.form { grid-template-columns:repeat(6, minmax(0,1fr)) }
+.grid .span-2 { grid-column:span 2 }
+.grid .span-3 { grid-column:span 3 }
+.grid .span-6 { grid-column:span 6 }
+
+details {
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:10px 12px;
+  background:#0c1529;
+}
+summary { cursor:pointer; list-style:none }
+summary::-webkit-details-marker { display:none }
+
+.note { font-size:12px; color:var(--muted) }
+.right { margin-left:auto }
+.hidden { display:none }
